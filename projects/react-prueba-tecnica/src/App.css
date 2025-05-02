@@ -8,6 +8,11 @@ main {
   font-family: system-ui;
 }
 
+main img {
+  max-width: 800px;
+  height: auto;
+}
+
 /* row */
 /* section {
   display: flex;

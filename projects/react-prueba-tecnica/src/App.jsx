@@ -7,27 +7,30 @@ export function App() {
   const [fact, setFact] = useState()
   const [imageUrl, setImageUrl] = useState()
 
-  // you can't use React Query, SWR, axios, apollo, etc.
+  // retrieve a random cat fact
   useEffect(() => {
     fetch(CAT_ENDPOINT_FACT_URL)
       .then((res) => res.json())
       .then((data) => {
         const { fact } = data
         setFact(fact)
-
-        const firstThreeWords = fact.split(' ', 3).join(' ')
-        console.log(firstThreeWords)
-
-        fetch(
-          `https://cataas.com/cat/says/${firstThreeWords}?fontSize=50&fontColor=red&json=true`
-        )
-          .then((res) => res.json())
-          .then((response) => {
-            const { url } = response
-            setImageUrl(url)
-          })
       })
   }, [])
+
+  // retrieve a random cat image using the first three words of the fact
+  useEffect(() => {
+    if (!fact) return
+    const firstThreeWords = fact.split(' ', 3).join(' ')
+
+    fetch(
+      `https://cataas.com/cat/says/${firstThreeWords}?fontSize=50&fontColor=red&json=true`
+    )
+      .then((res) => res.json())
+      .then((response) => {
+        const { url } = response
+        setImageUrl(url)
+      })
+  }, [fact])
 
   return (
     <main>
